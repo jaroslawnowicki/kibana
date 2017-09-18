@@ -1,4 +1,4 @@
-package it.jaroslaw.nowicki.frontend
+package it.nowicki.jaroslaw.frontend
 
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.GetMapping
