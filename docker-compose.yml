@@ -1,0 +1,27 @@
+elasticsearch:
+  image: elasticsearch:2.4.6-alpine
+  command: elasticsearch -Des.network.host=0.0.0.0
+  ports:
+    - "9200:9200"
+    - "9300:9300"
+  volume_driver: flocker
+  volumes:
+    - $PWD/elasticsearch1:/usr/share/elasticsearch/data
+logstash:
+  image: logstash:2.4.1-alpine
+  command: logstash -f /etc/logstash/conf.d/logstash.conf
+  volumes:
+    - $PWD/logstash.conf:/etc/logstash/conf.d/logstash.conf
+    - $PWD/logs/:/logs/
+  ports:
+    - "5000:5000"
+  links:
+    - elasticsearch
+kibana:
+  image: kibana:4.6.6
+  ports:
+    - "5601:5601"
+  links:
+    - elasticsearch
+  environment:
+    - ELASTICSEARCH_URL=http://172.17.0.1:9200
